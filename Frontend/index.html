@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCar | Premium Rent A Car</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">SmartCar</div>
+        <div class="nav-links" id="nav-menu">
+            <!-- Dynamic Links via JS -->
+            <a href="index.html" class="active">Fleet</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Find Your Perfect Drive</h1>
+        <p>Experience the ultimate driving pleasure with our premium fleet.</p>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title">Our Premium Fleet</h2>
+        <div id="vehicle-list" class="vehicle-grid">
+            <!-- Vehicles will be injected here via JS -->
+            <div class="loading-spinner">Loading Fleet...</div>
+        </div>
+
+        <!-- Why Choose Us Section -->
+        <section class="features-section">
+            <h2 class="section-title">Why Choose SmartCar?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Premium Quality</h3>
+                    <p>Our fleet consists only of the latest luxury and sports models, maintained to perfection.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Booking</h3>
+                    <p>Book your dream car in seconds with our streamlined digital process.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Full Insurance</h3>
+                    <p>Drive with peace of mind knowing you are fully covered with our comprehensive insurance.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Branches Section -->
+        <section class="branches-section">
+            <h2 class="section-title">Visit Our Branches</h2>
+            <div id="branch-list" class="branches-grid">
+                <!-- Branches be injected here via JS -->
+                <div class="loading-spinner">Loading Branches...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>SmartCar</h3>
+                <p>The standard for luxury car rentals. Experience the thrill of the drive.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="index.html#vehicles">Vehicles</a>
+                <a href="profile.html">My Account</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <p>support@smartcar.com</p>
+                <p>+1 (555) 123-4567</p>
+                <p>Istanbul, Turkey</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 SmartCar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Rental Modal -->
+    <div id="rental-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Rent Vehicle</h2>
+            <div id="modal-vehicle-info"></div>
+            <form id="rental-form">
+                <input type="hidden" id="modal-vehicle-id">
+                <div class="form-group">
+                    <label>Additional Services</label>
+                    <div id="additional-services-container"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 5px;">
+                        <!-- JS Populated -->
+                    </div>
+                </div>
+
+                <div class="price-summary">
+                    <div class="price-row">
+                        <span>Daily Rate</span>
+                        <span id="summary-daily-price">$0</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Total Days</span>
+                        <span id="summary-days">0</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Services Cost</span>
+                        <span id="summary-services-cost">$0</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total Amount</span>
+                        <span id="summary-total">$0</span>
+                    </div>
+                </div>
+                <div id="step-dates">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="start-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="end-date" required>
+                    </div>
+                    <div id="price-preview"
+                        style="margin-bottom:1rem; font-weight:bold; color:var(--accent-color); display:none;">
+                        Total: <span id="total-price-val">0</span>
+                    </div>
+                    <button type="button" id="btn-next-payment" class="btn-rent">Next: Payment Details</button>
+                    <!-- <button type="submit" class="btn-rent" style="width:100%">Confirm Rental</button> -->
+                </div>
+
+                <div id="step-payment" style="display:none; animation: fadeIn 0.5s;">
+                    <h3 style="margin-bottom:1rem; color:var(--text-light);">Payment Details</h3>
+                    <div class="form-group">
+                        <label>Card Holder Name</label>
+                        <input type="text" id="card-name" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19">
+                    </div>
+                    <div style="display:flex; gap:1rem;">
+                        <div class="form-group" style="flex:1;">
+                            <label>Expiry Date</label>
+                            <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>CVV</label>
+                            <input type="text" id="card-cvv" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-rent" style="background: #10b981;">Pay & Rent Now</button>
+                    <button type="button" id="btn-back-dates"
+                        style="background:transparent; border:none; color:var(--text-dim); width:100%; margin-top:0.5rem; cursor:pointer;">&larr;
+                        Back to Dates</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script> <!-- Auth first, maybe utilized -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

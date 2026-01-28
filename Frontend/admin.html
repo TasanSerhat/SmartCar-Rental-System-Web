@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCar | Admin Panel</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .vehicle-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface-card);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .vehicle-table th,
+        .vehicle-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vehicle-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+            margin-right: 0.5rem;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface-card);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .form-group select option {
+            background-color: #1e293b;
+            /* Dark background matches theme */
+            color: white;
+            padding: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="admin-header">
+            <h1>Vehicle Management</h1>
+            <div style="display: flex; gap: 1rem;">
+                <a href="index.html" class="btn"
+                    style="background: transparent; border: 1px solid var(--primary-color);">Back to Site</a>
+            </div>
+        </div>
+
+        <div class="tabs" style="margin-bottom: 2rem;">
+            <button class="tab-btn active" onclick="switchTab('vehicles')">Vehicles</button>
+            <button class="tab-btn" onclick="switchTab('customers')">Customers</button>
+            <button class="tab-btn" onclick="switchTab('employees')">Employees</button>
+            <button class="tab-btn" onclick="switchTab('branches')">Branches</button>
+            <button class="tab-btn" onclick="switchTab('reservations')">Reservations</button>
+            <button class="tab-btn" onclick="switchTab('rentals')">Rentals</button>
+        </div>
+
+        <!-- VEHICLES SECTION -->
+        <div id="vehicles-section">
+            <div class="header-actions" style="margin-bottom: 1rem; text-align: right;">
+                <button class="btn-add" onclick="openModal()">+ Add Vehicle</button>
+            </div>
+            <table class="vehicle-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Plate No</th>
+                        <th>Color</th>
+                        <th>Daily Price</th>
+                        <th>Model Year</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicle-table-body">
+                    <!-- Vehicles will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CUSTOMERS SECTION -->
+        <div id="customers-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 1rem; text-align: right;">
+                <button class="btn-add" onclick="openCustomerModal()">+ Add Customer</button>
+            </div>
+            <table class="vehicle-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>License No</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="customer-table-body">
+                    <!-- Customers will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- EMPLOYEES SECTION -->
+        <div id="employees-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 1rem; text-align: right;">
+                <button class="btn-add" onclick="openEmployeeModal()">+ Add Employee</button>
+            </div>
+            <table class="vehicle-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Branch</th>
+                        <th>Email</th>
+                        <th>Salary</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="employee-table-body">
+                    <!-- JS Populated -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BRANCHES SECTION -->
+        <div id="branches-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 1rem; text-align: right;">
+                <button class="btn-add" onclick="openBranchModal()">+ Add Branch</button>
+            </div>
+            <table class="vehicle-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Contact Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="branch-table-body">
+                    <!-- JS Populated -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RESERVATIONS SECTION -->
+        <div id="reservations-section" style="display: none;">
+            <div class="admin-header">
+                <h2>Reservations (Bookings)</h2>
+                <!-- <button class="action-btn btn-add">+ New Reservation</button> -->
+            </div>
+            <div class="table-container">
+                <table class="vehicle-table">
+                    <thead>
+                        <tr>
+                            <th>Res ID</th>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservation-table-body">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RENTALS SECTION -->
+        <div id="rentals-section" style="display: none;">
+            <div class="admin-header">
+                <h2>Rentals Management</h2>
+            </div>
+
+            <!-- Sub Tabs within Rentals -->
+            <div style="margin-bottom:1rem;">
+                <button class="action-btn" onclick="toggleRentalView('active')"
+                    style="background:var(--primary-color);color:white;" id="btn-view-active">Active Rentals</button>
+                <button class="action-btn" onclick="toggleRentalView('past')"
+                    style="background:transparent;color:var(--text-dim);border:1px solid var(--text-dim);"
+                    id="btn-view-past">Rental History</button>
+            </div>
+
+            <div id="active-rentals-view">
+                <h3 style="margin:1rem 0;color:var(--accent-color);">Active Rentals</h3>
+                <div class="table-container">
+                    <table class="vehicle-table">
+                        <thead>
+                            <tr>
+                                <th>Res ID</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="active-rentals-table-body">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="past-rentals-view" style="display:none;">
+                <h3 style="margin:1rem 0;color:var(--text-dim);">Past Rentals</h3>
+                <div class="table-container">
+                    <table class="vehicle-table">
+                        <thead>
+                            <tr>
+                                <th>Res ID</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="past-rentals-table-body">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- End of Past Rentals View -->
+            </div>
+        </div>
+        <!-- End of Rentals Section -->
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="vehicleModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()"
+                style="color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 1.5rem;">Add New Vehicle</h2>
+            <form id="vehicleForm">
+                <input type="hidden" id="vehicleId">
+                <div class="form-group">
+                    <label>Plate Number</label>
+                    <input type="text" id="plateNo" required placeholder="e.g. 34 ABC 99">
+                </div>
+                <!-- Simplified for MVP - using IDs directly or hardcoded values for verification because we need dropdows usually -->
+                <div class="form-group">
+                    <label>Model</label>
+                    <select id="modelId" required>
+                        <option value="">Select a Model</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Branch</label>
+                    <select id="branchId" required>
+                        <option value="">Select a Branch</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Color</label>
+                    <select id="colorId" required>
+                        <option value="">Select a Color</option>
+                    </select>
+                </div>
+                <!-- Model Year and Daily Price are determined by Model ID -->
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="description" required value="Premium Vehicle">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn" onclick="closeModal()"
+                        style="background: transparent; border: 1px solid var(--text-secondary); flex: 1;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="customerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-customer-modal"
+                style="color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;">&times;</span>
+            <h2 id="customerModalTitle">Add New Customer</h2>
+            <form id="customerForm">
+                <input type="hidden" id="customerId">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label>License Number</label>
+                    <input type="text" id="licenseNo" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <!-- Close logic for customer modal needs to be checked in admin.js -->
+                    <!-- Actually admin.js uses .close-customer-modal click handler. We can add a Cancel button with explicit ID or onclick -->
+                    <button type="button" class="btn" id="btnCancelCustomer"
+                        style="background: transparent; border: 1px solid var(--text-secondary); flex: 1;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Upload Vehicle Image</h2>
+            <form id="imageForm">
+                <input type="hidden" id="imageVehicleId">
+                <div class="form-group">
+                    <label>Select Image (JPG/PNG)</label>
+                    <input type="file" id="imageFile" accept="image/*" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn" onclick="closeImageModal()"
+                        style="background: transparent; border: 1px solid var(--text-secondary); flex: 1;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EMPLOYEE MODAL -->
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-employee-modal"
+                style="color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;"
+                onclick="document.getElementById('employeeModal').style.display='none'">&times;</span>
+            <h2>Add New Employee</h2>
+            <form id="employeeForm">
+                <input type="hidden" id="employeeId">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="empFirstName" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" id="empLastName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="empEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="empRole" required>
+                        <option value="Manager">Manager</option>
+                        <option value="Salesperson">Salesperson</option>
+                        <option value="Technician">Technician</option>
+                        <option value="Support">Support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Salary</label>
+                    <input type="number" id="empSalary" required>
+                </div>
+                <div class="form-group">
+                    <label>Branch</label>
+                    <select id="empBranchId" required>
+                        <!-- Loaded dynamically -->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%">Save Employee</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- BRANCH MODAL -->
+    <div id="branchModal" class="modal">
+        <div class="modal-content">
+            <span class="close-branch-modal"
+                style="color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;"
+                onclick="document.getElementById('branchModal').style.display='none'">&times;</span>
+            <h2>Add New Branch</h2>
+            <form id="branchForm">
+                <input type="hidden" id="editBranchId">
+                <div class="form-group">
+                    <label>Branch Name</label>
+                    <input type="text" id="branchName" required>
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="branchCity" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="branchAddress" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Email</label>
+                    <input type="email" id="branchEmail" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%">Save Branch</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script> <!-- Admin might use auth helpers if added later -->
+    <script src="assets/js/admin.js"></script>
+</body>
+
+</html>

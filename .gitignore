@@ -1,0 +1,30 @@
+# C# .NET
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.pdb
+*.cache
+*.suo
+
+# Project specific
+*.log
+*.txt
+.gemini/
+.agent/
+brain/
+artifacts/
+
+# Credentials
+appsettings.Development.json
+secrets.json
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Frontend
+node_modules/
+dist/
+.env
