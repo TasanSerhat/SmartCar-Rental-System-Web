@@ -56,7 +56,7 @@ python -m http.server 8000
 ![SmartCar Screenshots](Screenshots/6.png)
 ![SmartCar Screenshots](Screenshots/7.png)
 
- **Note:** This repository houses the **Web Application** version of the project. There is also a companion **Windows Desktop Application** available [here](#) ([Update link](https://github.com/TasanSerhat/SmartCar-Rental-System-WinApp)).
+ **Note:** This repository houses the **Web Application** version of the project. There is also a companion **Windows Desktop Application** available [here](https://github.com/TasanSerhat/SmartCar-Rental-System-WinApp)
 
 *This project was developed using Google's Antigravity plugin.*
 
