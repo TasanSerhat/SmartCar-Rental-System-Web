@@ -42,6 +42,12 @@ cd Frontend
 python -m http.server 8000
 ```
 
+## 🔐 Default Login Credentials
+To test the Admin Panel features, you can use the following pre-configured account:
+
+- **Email:** `admin5525@smartcar.com`
+- **Password:** `Password123!`
+
 ## 📂 Project Structure
 
 - `SmartCar/`: Backend Solution (Core, Entities, DataAccess, Business, WebAPI).
