@@ -13,7 +13,7 @@
 ## 🛠 Technology Stack
 
 - **Backend**: .NET 9.0 (WebAPI, Entity Framework Core)
-- **Database**: SQL Server (Code-First Migration)
+- **Database**: PostgreSQL (Code-First Migration)
 - **Frontend**: HTML5, Vanilla JavaScript, CSS3
 - **Tools**: PowerShell scripts for seeding data.
 
